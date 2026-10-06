@@ -39,14 +39,18 @@ int main()
             case 3:
                 printf("Digite o codigo da solicitacao: ");
                 scanf("%d", &valor);
-                int achado = buscaNo(L, valor);
-                if (achado == -1) {
-                    printf("Solicitacao %d nao encontrada.\n", valor);
+                    if (L -> inicio == NULL) {
+                    printf("Nenhuma solicitacao cadastrada.\n");
                 } else {
-                    printf("Solicitacao %d encontrada.\n", achado);
+                    imprimirinformacao(L, valor);
                 }
                 break;
             case 4:
+                if (L -> inicio == NULL) {
+                    printf("Nenhuma solicitacao cadastrada.\n");
+                } else {
+                    alterarSolicitacao(L);
+                }
                 break;
             case 5:
                 break;
