@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <ctype.h>
 
 typedef struct {
     int  CodigoDeSolicitacao;
@@ -227,6 +227,27 @@ void alterarSolicitacao(Lista *L) {
 
     printf("Solicitacao alterada com sucesso!\n");
     imprimeSolicitacao(&encontrado->info);
+}
+
+void removerSolicitacao(Lista *L, int codigoQuatro) {
+    if (L->inicio == NULL) {
+        printf("A lista esta vazia.\n");
+        return;
+    }
+    No *aux1 = L->inicio;
+    No *aux2 = NULL;
+    while (aux1 != NULL && aux1->info.CodigoDeSolicitacao != codigoQuatro) {
+        aux2 = aux1;
+        aux1 = aux1->prox;
+    }
+    if (aux2 == NULL) {
+        L->inicio = aux1->prox;
+    } else {
+        aux2->prox = aux1->prox;
+    }
+
+    free(aux1);
+    printf("Solicitacao removida z\n");
 }
 
 #endif
