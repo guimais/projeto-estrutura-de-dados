@@ -34,7 +34,15 @@ int main()
                 break;
             }
             case 2:
+                printf("Digite o codigo da solicitacao que deseja remover: ");
+                scanf("%d", &valor);
 
+
+                if (busca(L, valor) == 1) {
+                    removerSolicitacao(L, valor);
+                } else {
+                    printf("Solicitacao com codigo %d nao encontrada.\n\n", valor);
+                }
                 break;
             case 3:
                 printf("Digite o codigo da solicitacao: ");
