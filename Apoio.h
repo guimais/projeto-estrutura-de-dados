@@ -250,4 +250,117 @@ void removerSolicitacao(Lista *L, int codigoQuatro) {
     printf("Solicitacao removida z\n");
 }
 
+int vemAntes(No *novo, No *atual) {
+	if (novo->info.periodo < atual->info.periodo) {
+		return 1;
+	}
+	if (novo->info.periodo == atual->info.periodo) {
+		if (novo->info.CodigoDeSolicitacao < atual->info.CodigoDeSolicitacao) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+void insereOrdemManutencao(Lista *L, Solicitacao s) {
+	No *novo;
+	No *atual;
+
+	novo = (No*)malloc(sizeof(No));
+	novo->info = s;
+	novo->prox = NULL;
+
+	if (L->inicio == NULL) {
+		L->inicio = novo;
+		return;
+	}
+
+	if (vemAntes(novo, L->inicio) == 1) {
+		novo->prox = L->inicio;
+		L->inicio = novo;
+		return;
+	}
+
+	for (atual = L->inicio; atual->prox != NULL; atual = atual->prox) {
+		if (vemAntes(novo, atual->prox) == 1) {
+			break;
+		}
+	}
+
+	novo->prox = atual->prox;
+	atual->prox = novo;
+}
+
+void liberaLista(Lista *L) {
+	No *aux;
+	No *temp;
+
+	aux = L->inicio;
+	for (; aux != NULL; ) {
+		temp = aux;
+		aux = aux->prox;
+		free(temp);
+	}
+	free(L);
+}
+
+void ordemManutencao(Lista *L) {
+	Lista *lista1;
+	Lista *lista2;
+	Lista *lista3;
+	Lista *listaAtual;
+	No *aux;
+	int i;
+
+	if (L->inicio == NULL) {
+		printf("A lista esta vazia.\n");
+		return;
+	}
+
+	lista1 = CriaLista();
+	lista2 = CriaLista();
+	lista3 = CriaLista();
+
+	for (aux = L->inicio; aux != NULL; aux = aux->prox) {
+		switch (aux->info.prioridade) {
+			case 1:
+				insereOrdemManutencao(lista1, aux->info);
+				break;
+			case 2:
+				insereOrdemManutencao(lista2, aux->info);
+				break;
+			case 3:
+				insereOrdemManutencao(lista3, aux->info);
+				break;
+		}
+	}
+
+	printf("Ordem de manutencao\n");
+
+	for (i = 1; i <= 3; i++) {
+		switch (i) {
+			case 1:
+				printf("\nPrioridade 1 - Alta\n");
+				listaAtual = lista1;
+				break;
+			case 2:
+				printf("\nPrioridade 2 - Media\n");
+				listaAtual = lista2;
+				break;
+			case 3:
+				printf("\nPrioridade 3 - Baixa\n");
+				listaAtual = lista3;
+				break;
+		}
+		if (listaAtual->inicio == NULL) {
+			printf("Nenhuma solicitacao.\n");
+		}
+		imprimir(listaAtual);
+	}
+
+	liberaLista(lista1);
+	liberaLista(lista2);
+	liberaLista(lista3);
+}
+
 #endif
