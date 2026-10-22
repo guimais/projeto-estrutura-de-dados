@@ -271,6 +271,7 @@ int vemAntes(No *novo, No *atual) {
 void insereOrdemManutencao(Lista *L, Solicitacao s) {
 	No *novo;
 	No *atual;
+	No *anterior;
 
 	novo = (No*)malloc(sizeof(No));
 	novo->info = s;
@@ -281,20 +282,24 @@ void insereOrdemManutencao(Lista *L, Solicitacao s) {
 		return;
 	}
 
-	if (vemAntes(novo, L->inicio) == 1) {
+	anterior = NULL;
+	atual = L->inicio;
+
+	for (; atual != NULL; atual = atual->prox) {
+		if (vemAntes(novo, atual) == 1) {
+			break;
+		}
+		anterior = atual;
+	}
+
+	if (anterior == NULL) {
 		novo->prox = L->inicio;
 		L->inicio = novo;
 		return;
 	}
 
-	for (atual = L->inicio; atual->prox != NULL; atual = atual->prox) {
-		if (vemAntes(novo, atual->prox) == 1) {
-			break;
-		}
-	}
-
-	novo->prox = atual->prox;
-	atual->prox = novo;
+	novo->prox = atual;
+	anterior->prox = novo;
 }
 
 void liberaLista(Lista *L) {
