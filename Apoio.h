@@ -184,16 +184,22 @@ Solicitacao preencher(int codigoQuatro){
 
 void alterarSolicitacao(Lista *L) {
     int cod, novaPrioridade, novoPeriodo, limite;
-    printf("Digite o codigo da solicitacao: ");
-    scanf("%d", &cod);
+    No *encontrado = NULL;
 
-    No *encontrado = BuscaLista(L, cod);
-    if (encontrado == NULL) {
-        printf("Solicitacao com codigo %d nao encontrada.\n", cod);
-        return;
-    }
-    printf("Prioridade atual: %d\n", encontrado->info.prioridade);
-    printf("Periodo atual: %d\n", encontrado->info.periodo);
+    do {
+        printf("Digite o codigo da solicitacao que deseja alterar (0 para cancelar): ");
+        scanf("%d", &cod);
+
+        if (cod == 0) {
+            printf("Alteracao cancelada.\n");
+            return;
+        }
+
+        encontrado = BuscaLista(L, cod);
+        if (encontrado == NULL) {
+            printf("Solicitacao com codigo %d nao encontrada. Tente novamente.\n", cod);
+        }
+    } while (encontrado == NULL);
 
     do {
         printf("Nova prioridade (1 a 3): ");
@@ -210,22 +216,22 @@ void alterarSolicitacao(Lista *L) {
                 break;
             default:
                 limite = 0;
-                printf("Digite uma prioridade de 1 a 3\n");
+                printf("Prioridade invalida! Digite uma prioridade de 1 a 3.\n");
         }
     } while (limite == 0);
 
     do {
-        printf("Novo periodo (1 a %d): ", limite);
+        printf("Novo periodo (1 a %d dias): ", limite);
         scanf("%d", &novoPeriodo);
         if (novoPeriodo < 1 || novoPeriodo > limite) {
             printf("Periodo invalido para a prioridade %d. Tente novamente.\n", novaPrioridade);
         }
     } while (novoPeriodo < 1 || novoPeriodo > limite);
 
-    encontrado -> info.prioridade = novaPrioridade;
-    encontrado -> info.periodo = novoPeriodo;
+    encontrado->info.prioridade = novaPrioridade;
+    encontrado->info.periodo = novoPeriodo;
 
-    printf("Solicitacao alterada com sucesso!\n");
+    printf("\nSolicitacao alterada com sucesso!\n");
     imprimeSolicitacao(&encontrado->info);
 }
 
@@ -247,7 +253,7 @@ void removerSolicitacao(Lista *L, int codigoQuatro) {
     }
 
     free(aux1);
-    printf("Solicitacao removida z\n");
+    printf("Solicitacao removida \n");
 }
 
 int vemAntes(No *novo, No *atual) {
