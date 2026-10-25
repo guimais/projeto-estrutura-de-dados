@@ -61,6 +61,7 @@ int main()
                 }
                 break;
             case 5:
+                ordemManutencao(L);
                 break;
             case 6:
                 if (L -> inicio == NULL) {
